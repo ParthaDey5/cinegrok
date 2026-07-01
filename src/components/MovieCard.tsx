@@ -1,4 +1,4 @@
-import type { Movie } from '@/types/movie';
+import type { Movie } from '../types/movie';
 import { Plus, Check } from 'lucide-react';
 import { useMovieStore } from '../store/useMovieStore';
 

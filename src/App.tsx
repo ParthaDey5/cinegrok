@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import MovieCard from './components/MovieCard';
 import MovieModal from './components/MovieModal';
 import { getPopularMovies, searchMovies } from './services/tmdb';
-import type { Movie } from '@/types/movie';
+import type { Movie } from '../src/types/movie';
 
 function App() {
   const [darkMode, setDarkMode] = useState(()=>
@@ -60,7 +60,6 @@ function App() {
         </main>
 
         <MovieModal 
-          darkMode={darkMode}
           movie={selectedMovie} 
           isOpen={!!selectedMovie} 
           onClose={() => setSelectedMovie(null)} 

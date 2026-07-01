@@ -7,7 +7,7 @@ interface MovieModalProps {
   onClose: () => void;
 }
 
-export default function MovieModal({ darkMode, movie, isOpen, onClose }: MovieModalProps) {
+export default function MovieModal({ movie, isOpen, onClose }: MovieModalProps) {
   if (!isOpen || !movie) return null;
 
   return (

@@ -1,6 +1,8 @@
 import { create } from 'zustand';
+import type { Movie } from '../types/movie';
 
 interface WatchlistItem extends Movie {
+  id: number;
   addedAt: string;
 }
 
