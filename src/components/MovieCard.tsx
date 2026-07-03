@@ -23,7 +23,7 @@ export default function MovieCard({ movie, onClick }: MovieCardProps) {
   return (
     <div 
       onClick={() => onClick(movie)}
-      className="movie-card group bg-gray-900 rounded-2xl overflow-hidden cursor-pointer"
+      className="movie-card group dark:bg-gray-900 bg-gray-200 rounded-2xl overflow-hidden cursor-pointer"
     >
       <div className="relative">
         <img 
@@ -47,7 +47,7 @@ export default function MovieCard({ movie, onClick }: MovieCardProps) {
       <div className="p-4">
         <h3 className="font-semibold text-lg line-clamp-2">{movie.title}</h3>
         <div className="flex justify-between items-center mt-2">
-          <p className="text-sm text-gray-400">{movie.release_date?.slice(0, 4)}</p>
+          <p className="text-sm dark:text-gray-400 text-gray-600">{movie.release_date?.slice(0, 4)}</p>
           <p className="text-sm font-medium">⭐ {movie.vote_average?.toFixed(1)}</p>
         </div>
       </div>

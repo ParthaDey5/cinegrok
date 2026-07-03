@@ -3,25 +3,27 @@ import { useQuery } from '@tanstack/react-query';
 import Navbar from './components/Navbar';
 import MovieCard from './components/MovieCard';
 import MovieModal from './components/MovieModal';
+import Watchlist from './components/Watchlist';
+import MovieSkeleton from './components/MovieSkeleton';
 import { getPopularMovies, searchMovies } from './services/tmdb';
 import type { Movie } from '../src/types/movie';
 
 function App() {
-  const [darkMode, setDarkMode] = useState(()=>
+  const [darkMode, setDarkMode] = useState(() =>
     JSON.parse(localStorage.getItem('darkmode')) ?? true
-    );
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-
+  const [showWatchlist, setShowWatchlist] = useState(false);
   useEffect(() => {
     localStorage.setItem("darkmode", darkMode)
   }, [darkMode])
-  
-  
+
+
   const { data: movies = [], isLoading } = useQuery({
     queryKey: ['movies', searchQuery],
-    queryFn: () => 
-      searchQuery.length > 2 
+    queryFn: () =>
+      searchQuery.length > 2
         ? searchMovies(searchQuery).then(res => res.data.results)
         : getPopularMovies().then(res => res.data.results),
   });
@@ -33,36 +35,55 @@ function App() {
   return (
     <div className={darkMode ? 'dark' : ''}>
       <div className={`min-h-screen dark:bg-gray-950 dark:text-white bg-gray-100 text-black `}>
-        <Navbar 
-          onSearch={handleSearch} 
-          darkMode={darkMode} 
-          setDarkMode={setDarkMode} 
+        <Navbar
+          onSearch={handleSearch}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
         />
 
-        <main className="max-w-7xl mx-auto px-6 md:py-10 py-24">
-          <h1 className="md:text-5xl text-7xl  font-bold text-center md:mb-4 mb-16">
-            {searchQuery ? `Results for "${searchQuery}"` : "Trending Movies"}
-          </h1>
+        <main className="max-w-7xl mx-auto px-6 py-10">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-5xl font-bold">
+              {showWatchlist ? "My Watchlist" :
+                searchQuery ? `Results for "${searchQuery}"` : "Trending Movies"}
+            </h1>
 
-          {isLoading ? (
-            <div className="text-center py-20">Loading amazing movies...</div>
+            <button
+              onClick={() => setShowWatchlist(!showWatchlist)}
+              className="px-6 py-3 dark:bg-gray-800 bg-gray-200 dark:hover:bg-gray-700 hover:bg-gray-300 rounded-full transition"
+            >
+              {showWatchlist ? "Browse Movies" : "View Watchlist"}
+            </button>
+          </div>
+
+          {showWatchlist ? (
+            <Watchlist />
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 md:gap-6 gap-8">
-              {movies.map((movie: Movie) => (
-                <MovieCard 
-                  key={movie.id} 
-                  movie={movie} 
-                  onClick={setSelectedMovie}
-                />
-              ))}
-            </div>
+            <>
+              {isLoading ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                  {[...Array(10)].map((_, i) => <MovieSkeleton key={i} />)}
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                  {movies.map((movie: Movie) => (
+                    <MovieCard
+                      key={movie.id}
+                      movie={movie}
+                      onClick={setSelectedMovie}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </main>
 
-        <MovieModal 
-          movie={selectedMovie} 
-          isOpen={!!selectedMovie} 
-          onClose={() => setSelectedMovie(null)} 
+
+        <MovieModal
+          movie={selectedMovie}
+          isOpen={!!selectedMovie}
+          onClose={() => setSelectedMovie(null)}
         />
       </div>
     </div>
