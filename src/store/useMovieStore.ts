@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import type { Movie } from '../types/movie';
 
+
+
 interface WatchlistItem extends Movie {
   id: number;
   addedAt: string;
@@ -14,14 +16,16 @@ interface MovieStore {
 }
 
 export const useMovieStore = create<MovieStore>((set, get) => ({
-  watchlist: [],
-  
+
+  watchlist: localStorage.getItem('watchlist') ? JSON.parse(localStorage.getItem('watchlist') || '[]') : [],
+
   addToWatchlist: (movie) => {
     if (get().isInWatchlist(movie.id)) return;
-    
+
     set((state) => ({
       watchlist: [...state.watchlist, { ...movie, addedAt: new Date().toISOString() }]
     }));
+    
   },
 
   removeFromWatchlist: (id) => {

@@ -1,6 +1,7 @@
 import type { Movie } from '../types/movie';
 import { Plus, Check } from 'lucide-react';
 import { useMovieStore } from '../store/useMovieStore';
+import { useEffect } from 'react';
 
 interface MovieCardProps {
   movie: Movie;
@@ -8,7 +9,7 @@ interface MovieCardProps {
 }
 
 export default function MovieCard({ movie, onClick }: MovieCardProps) {
-  const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useMovieStore();
+  const { watchlist, addToWatchlist, removeFromWatchlist, isInWatchlist } = useMovieStore();
   const inWatchlist = isInWatchlist(movie.id);
 
   const handleWatchlist = (e: React.MouseEvent) => {
@@ -19,6 +20,10 @@ export default function MovieCard({ movie, onClick }: MovieCardProps) {
       addToWatchlist(movie);
     }
   };
+
+  useEffect(() => {
+  localStorage.setItem('watchlist', JSON.stringify(watchlist));
+}, [addToWatchlist, removeFromWatchlist, watchlist]);
 
   return (
     <div 
@@ -44,11 +49,11 @@ export default function MovieCard({ movie, onClick }: MovieCardProps) {
         </button>
       </div>
 
-      <div className="p-4">
-        <h3 className="font-semibold text-lg line-clamp-2">{movie.title}</h3>
-        <div className="flex justify-between items-center mt-2">
-          <p className="text-sm dark:text-gray-400 text-gray-600">{movie.release_date?.slice(0, 4)}</p>
-          <p className="text-sm font-medium">⭐ {movie.vote_average?.toFixed(1)}</p>
+      <div className="md:p-4 p-10">
+        <h3 className="font-semibold md:text-lg text-5xl line-clamp-2">{movie.title}</h3>
+        <div className="flex justify-between items-center md:mt-2 mt-8">
+          <p className="md:text-sm text-4xl dark:text-gray-400 text-gray-600">{movie.release_date?.slice(0, 4)}</p>
+          <p className="md:text-sm text-4xl font-medium">⭐ {movie.vote_average?.toFixed(1)}</p>
         </div>
       </div>
     </div>

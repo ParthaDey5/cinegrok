@@ -41,16 +41,16 @@ function App() {
           setDarkMode={setDarkMode}
         />
 
-        <main className="max-w-7xl mx-auto px-6 py-10">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-5xl font-bold">
+        <main className="max-w-7xl mx-auto md:px-6 px-10 md:py-10 py-20">
+          <div className="flex justify-between items-center md:mb-8 mb-16">
+            <h1 className="md:text-5xl text-7xl font-bold">
               {showWatchlist ? "My Watchlist" :
                 searchQuery ? `Results for "${searchQuery}"` : "Trending Movies"}
             </h1>
 
             <button
               onClick={() => setShowWatchlist(!showWatchlist)}
-              className="px-6 py-3 dark:bg-gray-800 bg-gray-200 dark:hover:bg-gray-700 hover:bg-gray-300 rounded-full transition"
+              className="md:px-[2%] px-[4%] md:py-[1%] py-[2%] md:text-lg text-3xl dark:bg-gray-800 bg-gray-200 dark:hover:bg-gray-700 hover:bg-gray-300 rounded-full transition"
             >
               {showWatchlist ? "Browse Movies" : "View Watchlist"}
             </button>
@@ -65,7 +65,7 @@ function App() {
                   {[...Array(10)].map((_, i) => <MovieSkeleton key={i} />)}
                 </div>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 md:gap-6 gap-10">
                   {movies.map((movie: Movie) => (
                     <MovieCard
                       key={movie.id}
